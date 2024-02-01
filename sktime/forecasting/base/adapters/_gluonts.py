@@ -39,7 +39,10 @@ from __future__ import annotations
 
 import pandas as pd
 
-from sktime.forecasting.base import BaseForecaster
+from sktime.forecasting.base import BaseForecaster, ForecastingHorizon
+
+# todo: if any imports are sktime soft dependencies:
+# make sure to fill in the "python_dependencies" tag with the package import name
 
 # todo: write an informative docstring for the file or module, remove the above
 # todo: add an appropriate copyright notice for your estimator
@@ -49,11 +52,7 @@ from sktime.forecasting.base import BaseForecaster
 # todo: uncomment the following line, enter authors' GitHub IDs
 # __author__ = [authorGitHubID, anotherAuthorGitHubID]
 
-
 # todo: add any necessary imports here
-
-# todo: if any imports are sktime soft dependencies:
-# make sure to fill in the "python_dependencies" tag with the package import name
 
 
 class GluonTS(BaseForecaster):
@@ -116,7 +115,7 @@ class GluonTS(BaseForecaster):
         # --------------------------------------------
         #
         # ignores-exogeneous-X = does estimator ignore the exogeneous X?
-        "ignores-exogeneous-X": False,
+        "ignores-exogeneous-X": True,
         # valid values: boolean True (ignores X), False (uses X in non-trivial manner)
         # CAVEAT: if tag is set to True, inner methods always see X=None
         #
@@ -165,7 +164,7 @@ class GluonTS(BaseForecaster):
         #
         # author = author(s) of th estimator
         # an author is anyone with significant contribution to the code at some point
-        "authors": ["author1", "author2"],
+        "authors": ["MBristle"],
         # valid values: str or list of str, should be GitHub handles
         # this should follow best scientific contribution practices
         # scope is the code, not the methodology (method is per paper citation)
@@ -173,7 +172,7 @@ class GluonTS(BaseForecaster):
         # maintainer = current maintainer(s) of the estimator
         # per algorithm maintainer role, see governance document
         # this is an "owner" type role, with rights and maintenance duties
-        "maintainers": ["maintainer1", "maintainer2"],
+        # "maintainers": ["MBristle"],
         # valid values: str or list of str, should be GitHub handles
         # remove tag if maintained by sktime core team
         #
@@ -186,24 +185,20 @@ class GluonTS(BaseForecaster):
         # raises exception at construction if local python version is incompatible
         #
         # soft dependency requirement
-        "python_dependencies": ["gluonts"],  # TODO
-        # valid values: str or list of str, PEP 440 valid package version specifiers
-        # raises exception at construction if modules at strings cannot be imported
+        "python_dependencies": ["gluonts"],
     }
     #  in case of inheritance, concrete class should typically set tags
     #  alternatively, descendants can set tags in __init__ (avoid this if possible)
 
-    # todo: add any hyper-parameters and components to constructor
     def __init__(
         self,
         model,
         model_parameter: dict = None,
-        fh=12,
+        fh: ForecastingHorizon = None,
     ):
         # estimators should precede parameters
         #  if estimators have default values, set None and initialize below
 
-        # todo: write any hyper-parameters and components to self
         self.model = model
         self._fh = fh
         self.model_parameter = model_parameter
